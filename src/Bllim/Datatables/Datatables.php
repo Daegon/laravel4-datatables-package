@@ -903,13 +903,14 @@ class Datatables
 
         $query = ($this->query_type == 'eloquent') ? $this->query->getQuery() : $this->query;
 
+        $databasePrefix = $this->databasePrefix();
         $names[] = $query->from;
         $joins = $query->joins?:array();
         foreach ($joins as $join) {
             $table = preg_split("/ as /i", $join->table);
             $names[] = $table[0];
-            if (isset($table[1]) && !empty($this->databasePrefix()) && strpos($table[1], $this->databasePrefix()) == 0) {
-                $names[] = preg_replace('/^'.$this->databasePrefix().'/', '', $table[1]);
+            if (isset($table[1]) && !empty($databasePrefix) && strpos($table[1], $databasePrefix) == 0) {
+                $names[] = preg_replace('/^'.$databasePrefix.'/', '', $table[1]);
             }
         }
 
